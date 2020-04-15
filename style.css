@@ -2,7 +2,8 @@ body {
   position: relative;
 }
 
-.switch {
+/* стили переключателья */
+.switch-play-training {
   position: absolute;
   display: inline-block;
   width: 60px;
@@ -10,9 +11,13 @@ body {
   right: 10px;
 }
 
-.switch input {display:none;}
 
-.slider {
+
+.switch-play-training .switch-play-training__input-checkbox {display:none;}
+
+
+
+.switch-play-training__slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -24,7 +29,8 @@ body {
   transition: .4s;
 }
 
-.slider:before {
+
+.switch-play-training__slider:before {
   position: absolute;
   content: "";
   height: 22px;
@@ -36,25 +42,107 @@ body {
   transition: .4s;
 }
 
-.input-checkbox:checked + .slider {
+
+.switch-play-training__input-checkbox:checked + .switch-play-training__slider {
   background-color: rgb(226, 116, 43);
 }
 
-.input-checkbox:focus + .slider {
+
+.input-checkbox:focus + .switch-play-training__slider {
   box-shadow: 0 0 1px #2196F3;
 }
 
-.input-checkbox:checked + .slider:before {
+
+.switch-play-training__input-checkbox:checked + .switch-play-training__slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(36px);
 }
 
-/* Rounded sliders */
-.slider.round {
+
+
+.switch-play-training__round {
   border-radius: 34px;
 }
 
-.slider.round:before {
+
+.switch-play-training__round:before {
   border-radius: 50%;
+}
+
+
+/* стили для меню */
+.main-menu-switch {
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  width: 50px;
+  z-index: 1;
+  transition: all 0.3s ease-in;
+}
+
+
+.main-menu-switch:hover {
+  cursor: pointer;
+}
+
+
+.main-menu-switch-active {
+  transition: all 0.3s ease-in;
+  transform: rotate(90deg); 
+}
+
+
+ 
+
+
+.main-menu-switch li {
+  border-bottom: 5px solid black;
+  width: 100%;
+  height: 3px;
+  padding-bottom: 6px;
+}
+
+
+.main-menu-container {
+  position: absolute;
+  max-width: 360px;
+  top: 0px;
+  left: -390px;
+  padding: 80px 50px 70px 50px;
+  background-color: rgb(53, 53, 231);
+  border: 0;
+  border-radius: 2%;
+  opacity: 0.9;
+  box-sizing: border-box;
+  transition: all 0.4s ease-in;
+}
+
+.main-menu-container-active {
+  left: 0;
+  transition: all 0.4s ease-in;
+}
+
+
+
+
+.main-menu-list{
+  padding: 0;
+  list-style: none;
+}
+
+
+.main-menu-list__item {
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 40px;
+  color: rgb(255, 255, 255);
+}
+
+.main-menu-list__item:hover {
+  cursor: pointer;
+  color: red;
 }
