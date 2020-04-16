@@ -1,10 +1,11 @@
 body {
-  position: relative;
+  margin: 0;
 }
 
 /* стили переключателья */
 .switch-play-training {
   position: absolute;
+  top: calc(50% - 12px);
   display: inline-block;
   width: 60px;
   height: 25px;
@@ -44,7 +45,7 @@ body {
 
 
 .switch-play-training__input-checkbox:checked + .switch-play-training__slider {
-  background-color: rgb(226, 116, 43);
+  background-color: rgb(32, 14, 2);
 }
 
 
@@ -71,10 +72,17 @@ body {
 }
 
 
+.main-menu-switch-container {
+  position: relative;
+  background-color: rgb(236, 225, 225);
+  height: 70px;
+  margin-bottom: 130px;
+}
+
 /* стили для меню */
 .main-menu-switch {
   position: absolute;
-  top: 20px;
+  top: calc(50% - 21px);
   left: 10px;
   padding: 0;
   margin: 0;
@@ -145,4 +153,45 @@ body {
 .main-menu-list__item:hover {
   cursor: pointer;
   color: red;
+}
+
+
+.cards-container {
+  width: 1000px;
+  margin: 0 auto;
+}
+
+
+.card {
+  position: relative;
+  width: 300px;
+  box-shadow: 0 0 5px 1px black;
+}
+
+
+
+
+
+.card-image {
+  width: 100%;
+  height: 240px;
+}
+
+.card-text {
+  text-align: center;
+  padding: 4px 0;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.rotate-button {
+  position: absolute;
+  bottom: 0;
+  right: 20px;
+}
+
+
+.rotate-button__svg {
+  width: 40px;
+  height: 40px;
 }
