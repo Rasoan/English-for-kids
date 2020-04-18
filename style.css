@@ -266,13 +266,20 @@ body {
   transition: all 0.1s ease-in;
 }
 
-
+.rotate-button {
+  position: absolute;
+    bottom: 3px;
+    right: 15px;
+    width: 31px;
+    height: 40px;
+    transform: rotate(-20deg);
+}
 
 
 
 .card-image {
   width: 100%;
-  height: 200px;
+  height: 160px;
   object-fit: contain;
 }
 

@@ -80,11 +80,18 @@ function add_main_cards(category) { // функция которая добав�
 
 }
 
-
-function delete_cards() { // функция которая удалит карточки
+// функция которая удалит карточки
+function delete_cards() { 
   while (cards_container.firstChild) {
     cards_container.removeChild(cards_container.firstChild);
   }
+}
+
+// функция для воспроизведения аудио
+function soundPlay(src) {
+  let audio = new Audio(); // Создаём новый элемент Audio
+  audio.src = src; // Указываем путь к звуку "клика"
+  audio.autoplay = true; // Автоматически запускаем
 }
 
 
@@ -519,7 +526,7 @@ const array_objects_cards = [{
     word: 'blackboard',
     translation: 'доска',
     image: 'images/blackboard.jpg',
-    audioSrc: 'audio/blackoard.mp3'
+    audioSrc: 'audio/blackboard.mp3'
   },
   {
     categories: 'study',
@@ -654,7 +661,7 @@ main_menu_container.addEventListener("click", element => {
 
 });
 
-// обработчик событий клика по контейнеру карточек
+// обработчик событий клика по контейнеру карточек для карточек меню
 cards_container.addEventListener("click", element => { 
   
   if ( !element.target.parentNode.classList.toString().includes("item") ) return;
@@ -668,3 +675,31 @@ cards_container.addEventListener("click", element => {
   main_menu_container.classList.remove("main-menu-container-active"); // убрать меню
 
 });
+
+// обработчик событий клика по карточке, тоесть её картинке (воспроизвести аудио)
+cards_container.addEventListener("click", element => { 
+  let text_this;// переменная в которой текст текущей карточки
+  let src; // путь к аудиозаписи
+  // если кликнули по клавной карточке или не по картинке карточки то сразу завершить досрочно
+  if ( element.target.parentNode.classList.toString().includes("item") || !element.target.classList.toString().includes("card-image") ) { 
+    return; 
+  }
+  
+  // в этом цикле перебираем всё содержимое карточки, находим текст и присваиваем его переменной
+  for( let i of element.target.parentNode.children ) {
+    if (i.tagName == "FIGCAPTION") {
+      text_this = i.innerText.toString();
+    } 
+  };
+ 
+  // перебираем массив объектов и находим текущую карточку
+  for( let i = 0; i < array_objects_cards.length; i++ ) {
+    src = array_objects_cards[i].audioSrc;
+    if ( array_objects_cards[i].word == text_this ) break;
+  }
+  
+  soundPlay(src);
+});
+
+
+
