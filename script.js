@@ -14,25 +14,33 @@ const switch_trainin_play = document.querySelector(".switch-play-training__round
 
 // объект индикатор игры
 let object_train = {
-  training_mode: false,
-  count_error: 0,
-  count_click_card: 0,
+  training_mode: false, // режим игры выключен изначально
+  categoryes_page_mode: false, // изначально мы не на странице с категориями
+  count_error: 0,   // количество ложных кликов не по той самой карточке
+  count_click_card: 0,  // количество удачных кликов по той самой карточке
+  counts_button: 0,  // количество кнопок
   reset_parameters() {
-       this.training_mode = false;
-       this.count_error = 0;
-       this.count_click_card = 0;
+    this.training_mode = false;
+    this.count_error = 0;
+    this.count_click_card = 0;
   }
- }
+}
 
 
 
 function add_cards(category) { // функция которая добавит карточки определённой категории
+ 
 
   // цикл по массиву объектов карточек
   array_objects_cards.forEach(element => {
 
+
+
     if (element.categories == category && category != "category-card") { // все карточки кроме главных
-      
+      object_train.categoryes_page_mode = true; // мы на странице с категориями
+
+
+
       let div_vrap_card = document.createElement("div"); // создали обёртку карточки
       div_vrap_card.classList.add("card_vrap-rotate"); // присвоили её класс
 
@@ -61,7 +69,7 @@ function add_cards(category) { // функция которая добавит �
 
       let img_arrow = document.createElement('div'); // создаём стрелку
       img_arrow.classList.add('hand-drawn-arrow');
-      
+
 
       container_arrow.appendChild(img_arrow); // положим её в её обёртку
 
@@ -70,29 +78,29 @@ function add_cards(category) { // функция которая добавит �
       div_flipper_card.appendChild(card); // положили в флиппер карточку
 
 
-     // задняя часть карточки
-     card = document.createElement("figure"); // создали карточку
-     card.classList.add(default_class_card, element.categories, "card-back") // присвоили ей 2 класса
-     card.setAttribute("name", element.categories); // накинули атрибут name
+      // задняя часть карточки
+      card = document.createElement("figure"); // создали карточку
+      card.classList.add(default_class_card, element.categories, "card-back") // присвоили ей 2 класса
+      card.setAttribute("name", element.categories); // накинули атрибут name
 
-     img = document.createElement("img"); // создали картинку
-     img.classList.add(default_class_img_card); // добавили картинке класс
-     img.setAttribute("src", element.image); // дали ей путь
-     card.append(img); // положили картинку в карточку
+      img = document.createElement("img"); // создали картинку
+      img.classList.add(default_class_img_card); // добавили картинке класс
+      img.setAttribute("src", element.image); // дали ей путь
+      card.append(img); // положили картинку в карточку
 
-     text = document.createElement("figcaption"); // создали figcaption Для текста
-     text.classList.add(default_class_text); // добавили ему класс
-     text.innerText = element.translation; // пооложили туда текст
-     card.append(text); // положили текст в карточку
+      text = document.createElement("figcaption"); // создали figcaption Для текста
+      text.classList.add(default_class_text); // добавили ему класс
+      text.innerText = element.translation; // пооложили туда текст
+      card.append(text); // положили текст в карточку
 
-     container_arrow = document.createElement("div"); // создали
-     container_arrow.classList.add(default_class_container_img);
+      container_arrow = document.createElement("div"); // создали
+      container_arrow.classList.add(default_class_container_img);
 
 
-     
 
-     div_flipper_card.appendChild(card); // положили в флиппер карточку
-     div_vrap_card.appendChild(div_flipper_card) // положили в контейнер флиппер
+
+      div_flipper_card.appendChild(card); // положили в флиппер карточку
+      div_vrap_card.appendChild(div_flipper_card) // положили в контейнер флиппер
 
 
       cards_container.appendChild(div_vrap_card); // положили контейнер в контейнер, как ни странно
@@ -100,15 +108,22 @@ function add_cards(category) { // функция которая добавит �
 
   });
 
+  toggle_button( object_train.categoryes_page_mode, object_train.training_mode ); // первый аргумент true если мы на главной странице, второй аргумент если вых реж игр
+
+
 }
 
 
 
 
 function add_main_cards(category) { // функция которая добавит главные карточки
+
+  
+
   array_objects_cards.forEach(element => {
 
     if (element.categories == category && category == "category-card") { // если карточка та самая и главная
+      object_train.categoryes_page_mode = false; // мы не на странице с карточками категорий
 
       let card = document.createElement("figure"); // создали карточку
       card.classList.add(default_class_card, default_class_main_card, element.categories) // присвоили ей 2 класса
@@ -141,29 +156,28 @@ function add_main_cards(category) { // функция которая добав�
 
 
 // функция которая закрасит карточки в текущий режим, если режим игры то в 1 цвет, если тренеровка то в другой
-function card_text_added_fill( flag ) {
-  
+function card_text_added_fill(flag) {
+
   let collection_fill_card_text_main = cards_container.querySelectorAll(".category-card div");
   let collection_card_text_main = cards_container.querySelectorAll(".category-card .card-text");
 
-   if ( flag ) {
-    collection_fill_card_text_main.forEach( element => {
+  if (flag) {
+    collection_fill_card_text_main.forEach(element => {
       element.classList.add("main-card-text-fill-play");
     });
-    
-    collection_card_text_main.forEach( element => {
+
+    collection_card_text_main.forEach(element => {
       element.classList.add("main-card-color-text-play");
     });
-    }
-    else {
-      collection_fill_card_text_main.forEach( element => {
-        element.classList.remove("main-card-text-fill-play");
-      });
-      
-      collection_card_text_main.forEach( element => {
-        element.classList.remove("main-card-color-text-play");
-      });
-    }
+  } else {
+    collection_fill_card_text_main.forEach(element => {
+      element.classList.remove("main-card-text-fill-play");
+    });
+
+    collection_card_text_main.forEach(element => {
+      element.classList.remove("main-card-color-text-play");
+    });
+  }
 }
 
 
@@ -179,7 +193,7 @@ function card_text_added_fill( flag ) {
 
 
 // функция которая удалит карточки
-function delete_cards() { 
+function delete_cards() {
   while (cards_container.firstChild) {
     cards_container.removeChild(cards_container.firstChild);
   }
@@ -722,17 +736,17 @@ const array_objects_cards = [{
 
 
 add_main_cards('category-card'); // добавить главные карточки при загрузке страницы
-
+ 
 
 // обработчик событий клика по любому месту
 document.addEventListener("click", element => {
 
-// если был клик по любому месту кроме 
- if( !element.target.classList.toString().includes("main-menu-list") && !element.target.parentNode.classList.toString().includes("main-menu-switch") ) {
+  // если был клик по любому месту кроме 
+  if (!element.target.classList.toString().includes("main-menu-list") && !element.target.parentNode.classList.toString().includes("main-menu-switch")) {
 
-  main_menu_switch.classList.remove("main-menu-switch-active"); // повернуть обратно квадратик
-  main_menu_container.classList.remove("main-menu-container-active"); // убрать меню
- } 
+    main_menu_switch.classList.remove("main-menu-switch-active"); // повернуть обратно квадратик
+    main_menu_container.classList.remove("main-menu-container-active"); // убрать меню
+  }
 });
 
 
@@ -746,18 +760,21 @@ main_menu_switch.addEventListener("click", element => {
 
 
 // обработчик собитий клика по меню
-main_menu_container.addEventListener("click", element => { 
+main_menu_container.addEventListener("click", element => {
 
-  if ( !element.target.classList.toString().includes(default_class_main_card) ) return;
+  if (!element.target.classList.toString().includes(default_class_main_card)) return; // если клик был не по карточке меню
+  
+  if ( object_train.categoryes_page_mode && object_train.counts_button ) object_train.counts_button = 0; // если мы на странице с категор и кнопка есть, удалить
+
 
   delete_cards(); // удалить все карточки 
-  
-  add_main_cards( element.target.getAttribute("name").toString() ); // добавить главные карточки
+
+  add_main_cards(element.target.getAttribute("name").toString()); // добавить главные карточки
 
   add_cards(element.target.getAttribute("name").toString()); // добавить карточки определённой категории
 
-  card_text_added_fill( object_train.training_mode ); // если режим игры то закрасить главные карточки
-  card_input_mod_game( object_train.training_mode ); // если режим игры то закрасить карточки стандартные
+  card_text_added_fill(object_train.training_mode); // если режим игры то закрасить главные карточки
+  card_input_mod_game(object_train.training_mode); // если режим игры то закрасить карточки стандартные
 
   main_menu_switch.classList.remove("main-menu-switch-active"); // повернуть обратно квадратик
   main_menu_container.classList.remove("main-menu-container-active"); // убрать меню
@@ -766,15 +783,18 @@ main_menu_container.addEventListener("click", element => {
 
 
 
-// обработчик событий клика по контейнеру карточек для карточек меню
-cards_container.addEventListener("click", element => { 
-  
-  if ( !element.target.parentNode.classList.toString().includes("item") ) return;
+// обработчик событий клика по карточке меню
+cards_container.addEventListener("click", element => {
+
+  if (!element.target.parentNode.classList.toString().includes("item")) return;
 
   delete_cards(); // удалить все карточки
-  
-  add_cards( element.target.parentNode.getAttribute("name") ); // добавить карточки той самой категории
-  card_input_mod_game( object_train.training_mode ); // закрасить карточки стандартные
+
+  add_cards(element.target.parentNode.getAttribute("name")); // добавить карточки той самой категории
+  card_input_mod_game(object_train.training_mode); // закрасить карточки стандартные
+
+
+
 
 
   main_menu_switch.classList.remove("main-menu-switch-active"); // повернуть обратно квадратик
@@ -783,27 +803,27 @@ cards_container.addEventListener("click", element => {
 });
 
 
-// обработчик событий клика по контейнеру карточек для карточек меню
-cards_container.addEventListener("click", element => { 
-  
+// обработчик событий клика по контейнеру для поворота карточек
+cards_container.addEventListener("click", element => {
 
-  
-  if (  !element.target.classList.toString().includes("hand-drawn-arrow") ) { // если не стрелочка то выкл листенер
+
+
+  if (!element.target.classList.toString().includes("hand-drawn-arrow")) { // если не стрелочка то выкл листенер
     return;
   }
-  
 
-  element.target.parentNode.parentNode.parentNode.parentNode.classList.add("card_vrap-rotate-click-hover");  // добавить класс поворота
 
-  
- 
+  element.target.parentNode.parentNode.parentNode.parentNode.classList.add("card_vrap-rotate-click-hover"); // добавить класс поворота
+
+
+
   // обработчик событий: если кликнули всё таки по стрелочке и убрали с карточки мышку то убираем этот класс и возвращаем карточку на место
   element.target.parentNode.parentNode.parentNode.parentNode.addEventListener("mouseleave", element => {
 
-    element.target.classList.remove("card_vrap-rotate-click-hover");  // добавить класс поворота
+    element.target.classList.remove("card_vrap-rotate-click-hover"); // добавить класс поворота
 
-   });
-  
+  });
+
 
 });
 
@@ -818,31 +838,31 @@ cards_container.addEventListener("click", element => {
 
 
 // обработчик событий клика по карточке, тоесть её картинке (воспроизвести аудио)
-cards_container.addEventListener("click", element => { 
+cards_container.addEventListener("click", element => {
 
-   if ( object_train.training_mode ) return; // не воспроизводить звуки в режиме игры при клике по картинке
+  if (object_train.training_mode) return; // не воспроизводить звуки в режиме игры при клике по картинке
 
-  let text_this;// переменная в которой текст текущей карточки
+  let text_this; // переменная в которой текст текущей карточки
   let src; // путь к аудиозаписи
   // если кликнули по клавной карточке или не по картинке карточки то сразу завершить досрочно
-  if ( element.target.parentNode.classList.toString().includes("item") || !element.target.classList.toString().includes("card-image") ) { 
-    return; 
+  if (element.target.parentNode.classList.toString().includes("item") || !element.target.classList.toString().includes("card-image")) {
+    return;
   }
-  
+
   // в этом цикле перебираем всё содержимое карточки, находим текст и присваиваем его переменной
-  for( let i of element.target.parentNode.children ) {
+  for (let i of element.target.parentNode.children) {
     if (i.tagName == "FIGCAPTION") {
       text_this = i.innerText.toString();
-    } 
+    }
   };
- 
+
   // перебираем массив объектов и находим текущую карточку
-  for( let i = 0; i < array_objects_cards.length; i++ ) {
+  for (let i = 0; i < array_objects_cards.length; i++) {
     src = array_objects_cards[i].audioSrc;
-    if ( array_objects_cards[i].word == text_this ) break;
-    if ( i == array_objects_cards.length - 1 && array_objects_cards[i].word != text_this ) src = undefined;
+    if (array_objects_cards[i].word == text_this) break;
+    if (i == array_objects_cards.length - 1 && array_objects_cards[i].word != text_this) src = undefined;
   }
-  
+
   soundPlay(src);
 });
 
@@ -851,73 +871,107 @@ cards_container.addEventListener("click", element => {
 // /* режим игры */
 
 
-// let object_train = {
-//   training_mode: true,
-//   count_error: 0,
-//   count_click_card: 0,
-//   reset_parameters() {
-//        this.training_mode = false;
-//        this.count_error = 0;
-//        this.count_click_card = 0;
-//   }
-//  }
+
 
 // обработчик событий клика по переключателю
 
-
 switch_trainin_play.addEventListener("click", element => {
-  
-   // стукнули по переключателю и включили режим игры, стукнули снова выключили режим игры
-   object_train.training_mode =  !object_train.training_mode ? true: false;
 
-   // если стукнули по выключателю то закрасили или вернули в исходное состояние меню
-   main_menu_container.classList.toggle("main-menu-container-play");
-    
 
-   // если стукнули по выключателю то закрасили или вернули в исходное состояние главные карточки
-   card_text_added_fill( object_train.training_mode ); 
-   
-   card_input_mod_game( object_train.training_mode ); // закрасить карточки стандартные
+  // стукнули по переключателю и включили режим игры, стукнули снова выключили режим игры
+  object_train.training_mode = object_train.training_mode ? false : true;
+
+  // если стукнули по выключателю то закрасили или вернули в исходное состояние меню
+  main_menu_container.classList.toggle("main-menu-container-play");
+
+
+  // если стукнули по выключателю то закрасили или вернули в исходное состояние главные карточки
+  card_text_added_fill(object_train.training_mode);
+
+  card_input_mod_game(object_train.training_mode); // закрасить карточки стандартные
+
+  toggle_button( object_train.categoryes_page_mode, object_train.training_mode ); // первый аргумент true если мы на главной странице, второй аргумент если вых реж игр
+
+
+
 });
 
 
+
+
+
+
+
+
+
+// функция которая в зависимости от того главные карточки или просто карточки добавит или удалит кнопку
+function toggle_button( cards_main_in_page, mode_play ) {
+
+  
+
+  if ( cards_main_in_page && mode_play && !object_train.counts_button) { // если не карточки с главным меню на странице и режим игры
+
+    let button_mode_game = document.createElement("button"); // создали кнопку
+    button_mode_game.classList.add("button-mode-game"); // дали ей класс
+    button_mode_game.innerText = "Play";
+    cards_container.append(button_mode_game); // добавить кнопку 
+    object_train.training_mode = true;
+    object_train.counts_button++;
+    return;
+  }
+  if ( cards_container.lastElementChild.tagName == "BUTTON" ) { // если не режим игры или не на главной странице то удалить кнопку
+    cards_container.removeChild(cards_container.lastElementChild); // удалить кнопку
+    object_train.training_mode = false;
+    object_train.counts_button--;
+    return;
+  }
+}
+
+
+
+
+
+
+
+
 // функция которая подарит переключит все стандартные карточки в режим игры
-function card_input_mod_game( flag ) {
+function card_input_mod_game(flag) {
+
   const card_items_text = document.querySelectorAll(".card_vrap-rotate .card-text"); // все тексты карточек
   const card_items_arrow = document.querySelectorAll(".card_vrap-rotate .rotate-button"); // все стрелки карточек
   const card_items_image = document.querySelectorAll(".card_vrap-rotate .card-image"); // все картинки карточек
-  
-  
 
-  if( flag ) {
+  if (flag) { // если режим игры то убираем всё и оставляем только картинку
 
-  card_items_text.forEach(element => {
-    element.classList.add("card-text-hidden");
-  });
+    card_items_text.forEach(element => {
+      element.classList.add("card-text-hidden");
+    });
 
-  card_items_arrow.forEach(element => {
-    element.classList.add("rotate-button-hidden");
-  })
+    card_items_arrow.forEach(element => {
+      element.classList.add("rotate-button-hidden");
+    })
 
-  card_items_image.forEach(element => {
-   element.classList.add("card-image-play");
-  });
+    card_items_image.forEach(element => {
+      element.classList.add("card-image-play");
+    });
 
-  }
-  else {
+
+
+  } else { // если режим тренировки то возвращаем стрелки надписи и так далее
     card_items_text.forEach(element => {
       element.classList.remove("card-text-hidden");
     });
-  
+
     card_items_arrow.forEach(element => {
       element.classList.remove("rotate-button-hidden");
     })
-  
+
     card_items_image.forEach(element => {
-     element.classList.remove("card-image-play");
+      element.classList.remove("card-image-play");
     });
+    
   }
 
-
 }
+
 
