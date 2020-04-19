@@ -34,7 +34,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgb(44, 26, 143);
+  background-color: green;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -45,16 +45,22 @@ body {
   content: "";
   height: 22px;
   width: 22px;
-  left: 1px;
+  
   bottom: calc(50% - 11px);
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
+
+
+  left: 2px;
+  -webkit-transform: translateX(30px);
+  -ms-transform: translateX(50px);
+  transform: translateX(34px);
 }
 
 
 .switch-play-training__input-checkbox:checked+.switch-play-training__slider {
-  background-color: rgb(32, 14, 2);
+  background-color: rgb(53, 53, 231);
 }
 
 
@@ -64,9 +70,10 @@ body {
 
 
 .switch-play-training__input-checkbox:checked+.switch-play-training__slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(36px);
+  left: 2px;
+  -webkit-transform: translateX(0px);
+  -ms-transform: translateX(0px);
+  transform: translateX(0px);
 }
 
 
@@ -139,6 +146,10 @@ body {
   transition: all 0.4s ease-in;
 }
 
+.main-menu-container-play {
+  background-color: green;
+}
+
 .main-menu-container-active {
   left: 0;
   transition: all 0.4s ease-in;
@@ -185,6 +196,7 @@ body {
 
 
  .category-card {
+  position: relative;
   width: 300px;
   height: 251px;
   margin: 25px 20px;
@@ -267,15 +279,47 @@ body {
 .card-image {
   width: 100%;
   height: 200px;
-  object-fit: contain;
+  object-fit: cover;
 }
+
+.card-image-play {
+ height: 251px;
+}
+
 
 .card-text {
   text-align: center;
-  padding: 8px 0;
+  padding: 8px;
   font-weight: bold;
   font-size: 25px;
+  position: relative;
+  overflow: hidden;
 }
+
+
+.card-text-hidden {
+  display: none;
+}
+
+.main-card-color-text-play {
+  color: white;
+}
+
+.main-card-text-fill-training {
+  background-color: green;
+  width: 0;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: width .2s;
+  z-index: -1;
+}
+
+.main-card-text-fill-play {
+  width: 100%;
+}
+
 
 .rotate-button {
   position: absolute;
@@ -285,6 +329,12 @@ body {
   height: 50px;
   transform: rotate(-20deg);
 }
+
+
+.rotate-button-hidden {
+  display: none;
+}
+
 
 .hand-drawn-arrow {
   width: 100%;
