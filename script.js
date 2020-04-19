@@ -9,27 +9,25 @@ const default_class_container_img = "rotate-button";
 const default_class_arrow = "rotate-button__img";
 const default_class_main_card = "item";
 const switch_trainin_play = document.querySelector(".switch-play-training__round"); // получили наш переключатель
-
+const body_element = document.querySelector("body");
+const container_star = document.querySelector(".container-star");
 
 
 // объект индикатор игры
 let object_train = {
   training_mode: false, // режим игры выключен изначально
   categoryes_page_mode: false, // изначально мы не на странице с категориями
-  count_error: 0,   // количество ложных кликов не по той самой карточке
-  count_click_card: 0,  // количество удачных кликов по той самой карточке
-  counts_button: 0,  // количество кнопок
-  reset_parameters() {
-    this.training_mode = false;
-    this.count_error = 0;
-    this.count_click_card = 0;
-  }
+  count_no: 0, // количество ложных кликов не по той самой карточке
+  count_yes: 0, // количество удачных кликов по той самой карточке
+  count_cards: 0, // количество удачных кликов по той самой карточке
+  this_click: false,
+  counts_button: 0, // количество кнопок
 }
 
 
 
 function add_cards(category) { // функция которая добавит карточки определённой категории
- 
+
 
   // цикл по массиву объектов карточек
   array_objects_cards.forEach(element => {
@@ -59,7 +57,7 @@ function add_cards(category) { // функция которая добавит �
       card.append(img); // положили картинку в карточку
 
       let text = document.createElement("figcaption"); // создали figcaption Для текста
-      text.classList.add(default_class_text); // добавили ему класс
+      text.classList.add(default_class_text, "card-text-angl"); // добавили ему класс
       text.innerText = element.word; // пооложили туда текст
       card.append(text); // положили текст в карточку
 
@@ -108,7 +106,7 @@ function add_cards(category) { // функция которая добавит �
 
   });
 
-  toggle_button( object_train.categoryes_page_mode, object_train.training_mode ); // первый аргумент true если мы на главной странице, второй аргумент если вых реж игр
+  toggle_button(object_train.categoryes_page_mode, object_train.training_mode); // первый аргумент true если мы на главной странице, второй аргумент если вых реж игр
 
 
 }
@@ -118,7 +116,7 @@ function add_cards(category) { // функция которая добавит �
 
 function add_main_cards(category) { // функция которая добавит главные карточки
 
-  
+
 
   array_objects_cards.forEach(element => {
 
@@ -736,7 +734,7 @@ const array_objects_cards = [{
 
 
 add_main_cards('category-card'); // добавить главные карточки при загрузке страницы
- 
+
 
 // обработчик событий клика по любому месту
 document.addEventListener("click", element => {
@@ -763,8 +761,8 @@ main_menu_switch.addEventListener("click", element => {
 main_menu_container.addEventListener("click", element => {
 
   if (!element.target.classList.toString().includes(default_class_main_card)) return; // если клик был не по карточке меню
-  
-  if ( object_train.categoryes_page_mode && object_train.counts_button ) object_train.counts_button = 0; // если мы на странице с категор и кнопка есть, удалить
+
+  if (object_train.categoryes_page_mode && object_train.counts_button) object_train.counts_button = 0; // если мы на странице с категор и кнопка есть, удалить
 
 
   delete_cards(); // удалить все карточки 
@@ -890,7 +888,7 @@ switch_trainin_play.addEventListener("click", element => {
 
   card_input_mod_game(object_train.training_mode); // закрасить карточки стандартные
 
-  toggle_button( object_train.categoryes_page_mode, object_train.training_mode ); // первый аргумент true если мы на главной странице, второй аргумент если вых реж игр
+  toggle_button(object_train.categoryes_page_mode, object_train.training_mode); // первый аргумент true если мы на главной странице, второй аргумент если вых реж игр
 
 
 
@@ -905,11 +903,11 @@ switch_trainin_play.addEventListener("click", element => {
 
 
 // функция которая в зависимости от того главные карточки или просто карточки добавит или удалит кнопку
-function toggle_button( cards_main_in_page, mode_play ) {
+function toggle_button(cards_main_in_page, mode_play) {
 
-  
 
-  if ( cards_main_in_page && mode_play && !object_train.counts_button) { // если не карточки с главным меню на странице и режим игры
+
+  if (cards_main_in_page && mode_play && !object_train.counts_button) { // если не карточки с главным меню на странице и режим игры
 
     let button_mode_game = document.createElement("button"); // создали кнопку
     button_mode_game.classList.add("button-mode-game"); // дали ей класс
@@ -919,7 +917,7 @@ function toggle_button( cards_main_in_page, mode_play ) {
     object_train.counts_button++;
     return;
   }
-  if ( cards_container.lastElementChild.tagName == "BUTTON" ) { // если не режим игры или не на главной странице то удалить кнопку
+  if (cards_container.lastElementChild.tagName == "BUTTON") { // если не режим игры или не на главной странице то удалить кнопку
     cards_container.removeChild(cards_container.lastElementChild); // удалить кнопку
     object_train.training_mode = false;
     object_train.counts_button--;
@@ -969,9 +967,160 @@ function card_input_mod_game(flag) {
     card_items_image.forEach(element => {
       element.classList.remove("card-image-play");
     });
-    
+
   }
 
 }
+
+
+
+
+
+// функция перемешает все мои слова
+function shuffle__arry(arr) {
+  let j, temp;
+  for (let i = arr.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1));
+    temp = arr[j];
+    arr[j] = arr[i];
+    arr[i] = temp;
+  }
+  return arr;
+}
+
+
+// логика игры
+// получить массив всех слов
+// перемешать этот массив
+// войти в цикл и проигрывать музыку соответствующую текущему слову
+// проиграл трек и войти в бесконечный цикл который закончится когда пользователь
+
+let array_sound = []; // объявили массив для сбора треков
+let this_sound; // временная переменная
+document.addEventListener("click", element => {
+  if (!element.target.classList.contains("button-mode-game") || this_sound ) return; // если клик не по кнопке завершить или уже игра
+  array_sound.length = 0; // обнулить массив звуков
+
+  document.querySelector(".button-mode-game").classList.add("button-mode-game-active");
+  document.querySelector(".button-mode-game").innerText = "";
+
+  let collection_text_card = document.querySelectorAll(".card-text-angl"); // получили список слов
+
+  collection_text_card.forEach(element => { // положили все слова в массив
+    array_sound.push( 
+                   { 
+                     src: "audio/" + element.innerText.toString() + ".mp3", 
+                     word: element.innerText.toString(), 
+                     flag: false, 
+                    });
+  });
+  array_sound = shuffle__arry(array_sound); // перемешали все слова
+   
+  
+  object_train.count_cards = array_sound.length; // количество карточек всего
+  this_sound = array_sound.pop(); // забрать последний трек
+  soundPlay(this_sound.src); // воспроизвести его
+   
+
+});
+
+
+
+
+
+
+
+document.addEventListener("click", element => {
+
+  if ( !this_sound || element.target.classList.contains("button-mode-game") || !element.target.classList.contains("card-image") ) return; // если текущее слово false то выход
+   
+
+  let collection_children = element.target.parentNode.children; // получили коллекцию детей карточки
+  let text_this; // переменная в которой будет лежать текст карточки по которой кликнули
+  
+  // нашли в карточке текст и положили его в переменную текст зис
+  for (let i of collection_children ) {
+    if ( i.classList.contains("card-text-angl") ) {
+      text_this = i.innerText;
+    }
+  };
+  
+  // если нажал на ту самую карточку 
+  if (text_this == this_sound.word) {
+    object_train.count_yes++; // количество правильных ответов увеличилось
+    let abc = document.createElement("div");
+    abc.classList.add("star-win");
+    element.target.parentNode.classList.add("cards-container-active");
+
+
+    container_star.append(abc);
+    soundPlay("audio/true_click.mp3");
+    object_train.this_click = true; // текущий выбор верный
+  }
+  else {
+    object_train.count_no++; // количество правильных ответов уменьшилось
+    let jj = document.createElement("div");
+    jj.classList.add("star-lose");
+    container_star.append(jj);
+    soundPlay("audio/error_click.mp3");
+    object_train.this_click = false; // текущий выбор неверный
+  }
+  
+
+
+  if ( !object_train.this_click ) return; // если клик был неверный то досрочно заканчиваем обработчик
+
+  
+
+
+
+  // если количество верных ответов равно количеству карточек то перезагрузка
+  if ( object_train.count_yes == object_train.count_cards ) {
+
+    if ( object_train.count_no == 0 ) {
+      soundPlay("audio/fistful-of-frags-victory.mp3");
+     
+      while (body_element.firstChild) {
+        body_element.removeChild(body_element.firstChild);
+       }
+    
+       let create_element = document.createElement("div");
+       create_element.classList.add("body-win");
+       body_element.appendChild(create_element);
+
+      setTimeout(() => {window.location.pathname = '/'}, 16000);
+    }
+    else {
+      soundPlay("audio/you_lose.mp3");
+      while (body_element.firstChild) {
+        body_element.removeChild(body_element.firstChild);
+       }
+
+       let create_element = document.createElement("div");
+       create_element.classList.add("body-lose");
+       body_element.appendChild(create_element);
+      setTimeout(() => {window.location.pathname = '/'}, 5000);
+    }
+
+    
+  }
+
+  this_sound = array_sound.pop(); // забрали следующее слово
+  soundPlay(this_sound.src); // воспроизвели его
+  
+  
+});
+
+
+
+
+
+
+
+document.addEventListener("click", element => {
+  if ( element.target.classList.contains("button-mode-game")  && this_sound) {
+    soundPlay(this_sound.src);
+  }
+})
 
 

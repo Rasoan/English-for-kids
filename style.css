@@ -190,6 +190,10 @@ body {
 }
 
 
+.cards-container-active {
+  opacity: 0.4;
+} 
+
 .card {
   margin: 0;
   box-shadow: 0 0 5px 1px black;
@@ -401,6 +405,53 @@ body {
 }
 
 
+.star-win {
+  width: 20px;
+  height: 20px;
+  background-image: url("images/star-win.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.star-lose {
+  width: 20px;
+  height: 20px;
+  background-image: url("images/star-lose.png");
+  background-size: cover;
+  background-repeat: no-repeat; 
+}
+
+
+.body-lose {
+  width: 300px;
+  height: 300px;
+  margin: 50px auto;
+  background-image: url(images/failure.jpg);
+  background-size: cover;
+}
+
+.body-win {
+  width: 300px;
+  height: 250px;
+  margin: 50px auto;
+  background-image: url(images/success.jpg);
+  background-size: cover;
+}
+
+.button-mode-game-active {
+  color: white;
+  border-radius: 75%;
+  background: url(images/repeat_game.png);
+  object-fit: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 46px;
+  height: 30px;
+  padding: 38px;
+  left: calc(50% - 37px);
+  box-shadow: 0 0 3px 1px black;
+}
 
 
 
@@ -408,6 +459,23 @@ body {
 
 
 @media (max-width: 1180px) {
+
+
+
+
+  .body-lose {
+    width: 300px;
+    height: 300px;
+    margin: 50px auto;
+  }
+  
+  .body-win {
+    width: 300px;
+    height: 250px;
+    margin: 50px auto;
+  }
+
+
   /* стили карточек */
   .cards-container {
     width: 800px;
