@@ -43,9 +43,9 @@ function add_cards(category) { // функция которая добавит �
       container_arrow.classList.add(default_class_container_img);
 
 
-      let img_arrow = document.createElement('img'); // создаём стрелку
+      let img_arrow = document.createElement('div'); // создаём стрелку
       img_arrow.classList.add('hand-drawn-arrow');
-      img_arrow.setAttribute("src", "images/hand-drawn-arrow.png");
+      
 
       container_arrow.appendChild(img_arrow); // положим её в её обёртку
 
@@ -778,4 +778,6 @@ cards_container.addEventListener("click", element => {
 });
 
 
-
+// document.querySelector(".hand-drawn-arrow").addEventListener("")
+// document.querySelector(".hand-drawn-arrow").setAttribute("src", "images/hand-drawn-arrow-hover.png");
+// /* режим игры */
