@@ -16,9 +16,17 @@ function add_cards(category) { // функция которая добавит �
   array_objects_cards.forEach(element => {
 
     if (element.categories == category && category != "category-card") { // все карточки кроме главных
+      
+      let div_vrap_card = document.createElement("div"); // создали обёртку карточки
+      div_vrap_card.classList.add("card_vrap-rotate"); // присвоили её класс
 
+      let div_flipper_card = document.createElement("div"); // создали флиппер карточки
+      div_flipper_card.classList.add("card_flipper-rotate"); // присвоили её класс
+
+
+      // фронтальная часть карточки
       let card = document.createElement("figure"); // создали карточку
-      card.classList.add(default_class_card, element.categories) // присвоили ей 2 класса
+      card.classList.add(default_class_card, element.categories, "card-front") // присвоили ей 2 класса
       card.setAttribute("name", element.categories); // накинули атрибут name
 
       let img = document.createElement("img"); // создали картинку
@@ -43,7 +51,35 @@ function add_cards(category) { // функция которая добавит �
 
       card.appendChild(container_arrow); // положим стрелку в карточку
 
-      cards_container.appendChild(card); // положим готовую карточку в контейнер карточек
+      div_flipper_card.appendChild(card); // положили в флиппер карточку
+
+
+     // задняя часть карточки
+     card = document.createElement("figure"); // создали карточку
+     card.classList.add(default_class_card, element.categories, "card-back") // присвоили ей 2 класса
+     card.setAttribute("name", element.categories); // накинули атрибут name
+
+     img = document.createElement("img"); // создали картинку
+     img.classList.add(default_class_img_card); // добавили картинке класс
+     img.setAttribute("src", element.image); // дали ей путь
+     card.append(img); // положили картинку в карточку
+
+     text = document.createElement("figcaption"); // создали figcaption Для текста
+     text.classList.add(default_class_text); // добавили ему класс
+     text.innerText = element.translation; // пооложили туда текст
+     card.append(text); // положили текст в карточку
+
+     container_arrow = document.createElement("div"); // создали
+     container_arrow.classList.add(default_class_container_img);
+
+
+     
+
+     div_flipper_card.appendChild(card); // положили в флиппер карточку
+     div_vrap_card.appendChild(div_flipper_card) // положили в контейнер флиппер
+
+
+      cards_container.appendChild(div_vrap_card); // положили контейнер в контейнер, как ни странно
     }
 
   });
@@ -645,6 +681,8 @@ main_menu_switch.addEventListener("click", element => {
   main_menu_container.classList.toggle("main-menu-container-active");
 });
 
+
+
 // обработчик собитий клика по меню
 main_menu_container.addEventListener("click", element => { 
 
@@ -661,6 +699,8 @@ main_menu_container.addEventListener("click", element => {
 
 });
 
+
+
 // обработчик событий клика по контейнеру карточек для карточек меню
 cards_container.addEventListener("click", element => { 
   
@@ -675,6 +715,41 @@ cards_container.addEventListener("click", element => {
   main_menu_container.classList.remove("main-menu-container-active"); // убрать меню
 
 });
+
+
+// обработчик событий клика по контейнеру карточек для карточек меню
+cards_container.addEventListener("click", element => { 
+  
+
+  
+  if (  !element.target.classList.toString().includes("hand-drawn-arrow") ) { // если не стрелочка то выкл листенер
+    return;
+  }
+  
+
+  element.target.parentNode.parentNode.parentNode.parentNode.classList.add("card_vrap-rotate-click-hover");  // добавить класс поворота
+
+  
+ 
+  // обработчик событий: если кликнули всё таки по стрелочке и убрали с карточки мышку то убираем этот класс и возвращаем карточку на место
+  element.target.parentNode.parentNode.parentNode.parentNode.addEventListener("mouseleave", element => {
+
+    element.target.classList.remove("card_vrap-rotate-click-hover");  // добавить класс поворота
+
+   });
+  
+
+});
+
+
+
+
+
+
+
+
+
+
 
 // обработчик событий клика по карточке, тоесть её картинке (воспроизвести аудио)
 cards_container.addEventListener("click", element => { 
@@ -696,6 +771,7 @@ cards_container.addEventListener("click", element => {
   for( let i = 0; i < array_objects_cards.length; i++ ) {
     src = array_objects_cards[i].audioSrc;
     if ( array_objects_cards[i].word == text_this ) break;
+    if ( i == array_objects_cards.length - 1 && array_objects_cards[i].word != text_this ) src = undefined;
   }
   
   soundPlay(src);
