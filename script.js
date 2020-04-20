@@ -946,8 +946,19 @@ function toggle_button(cards_main_in_page, mode_play) {
 
 
 
-// функция которая подарит переключит все стандартные карточки в режим игры
+// функция которая переключит все стандартные карточки в режим игры
 function card_input_mod_game(flag) {
+
+  if ( true ) { // если переключили режим игры в любом случае игровой ресет
+    this_sound = false; // а если удалили кнопку то игра окончена в любом случае даже если не началась
+    object_train.reset_play(); // сбросили игровой объект
+    document.querySelectorAll(".card-front").forEach( element => { // снять выделение с карточек
+      element.classList.remove("cards-container-active");
+     });
+    while (container_star.firstChild) { // тогда удалим все звёздочки, даже если их нет
+      container_star.removeChild(container_star.firstChild);
+     }
+  }
 
   const card_items_text = document.querySelectorAll(".card_vrap-rotate .card-text"); // все тексты карточек
   const card_items_arrow = document.querySelectorAll(".card_vrap-rotate .rotate-button"); // все стрелки карточек
@@ -1097,7 +1108,7 @@ document.addEventListener("click", element => {
        let create_element = document.createElement("div");
        create_element.classList.add("body-win");
        body_element.appendChild(create_element);
-       setTimeout(() => {window.location.pathname = 'English-for-kids/index.html'}, 16000) // перезагрузить страницу
+       setTimeout(() => {window.location.pathname = 'English-for-kids/index.html'}, 18000) // перезагрузить страницу
     }
     else {
       setTimeout( () => { soundPlay("audio/you_lose.mp3") }, 1500); // музыка поражения
@@ -1109,7 +1120,7 @@ document.addEventListener("click", element => {
        let create_element = document.createElement("div");
        create_element.classList.add("body-lose");
        body_element.appendChild(create_element);
-       setTimeout(() => {window.location.pathname = 'English-for-kids/index.html'}, 5000) // перезагрузить страницу
+       setTimeout(() => {window.location.pathname = 'English-for-kids/index.html'}, 7000) // перезагрузить страницу
     }
 
     
