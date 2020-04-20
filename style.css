@@ -133,6 +133,7 @@ body {
 
 .main-menu-container {
   position: absolute;
+  height: 100vh;
   max-width: 360px;
   top: 0px;
   left: -390px;
@@ -409,7 +410,7 @@ body {
   min-width: 50px;
   height: 50px;
   background-image: url("images/star-win.png");
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
 }
 
@@ -418,7 +419,7 @@ body {
   min-width: 50px;
   height: 50px;
   background-image: url("images/star-lose.png");
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat; 
 }
 
@@ -429,6 +430,23 @@ body {
   margin: 50px auto;
   background-image: url(images/failure.jpg);
   background-size: cover;
+}
+
+.count-error-container {
+
+}
+
+.count-error-text {
+  width: 100%;
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  color: black
+}
+
+.count-error-value {
+  color: red;
+  font-weight: bold;
 }
 
 .body-win {
@@ -543,6 +561,11 @@ body {
 
 
 @media (max-width: 800px) {
+
+
+  .count-error-text {
+    font-size: 20px;
+  }
 
   /* стили карточек */
   .cards-container {

@@ -1108,6 +1108,20 @@ document.addEventListener("click", element => {
        let create_element = document.createElement("div");
        create_element.classList.add("body-win");
        body_element.appendChild(create_element);
+
+
+      // сооздали и положили текст победы
+      let container_text = document.createElement("div");
+      container_text.classList.add("count-error-container");
+      let count_text_error = document.createElement("p");
+      count_text_error.classList.add("count-error-text");
+      count_text_error.innerText = "Поздравляем, you win!!!!";
+      container_text.append(count_text_error);
+      body_element.appendChild(container_text);
+      // текст победы конец
+
+  
+
        setTimeout(() => {window.location.pathname = 'English-for-kids/index.html'}, 18000) // перезагрузить страницу
     }
     else {
@@ -1116,10 +1130,30 @@ document.addEventListener("click", element => {
       while (body_element.firstChild) {
         body_element.removeChild(body_element.firstChild);
        }
-
+       
+      // создали и положили картинку поражения
        let create_element = document.createElement("div");
        create_element.classList.add("body-lose");
        body_element.appendChild(create_element);
+
+
+       // сооздали и положили текст поражения
+       let container_text = document.createElement("div");
+       container_text.classList.add("count-error-container");
+       let count_text_error = document.createElement("p");
+       count_text_error.classList.add("count-error-text");
+       count_text_error.innerText = "К сожалению you lose, количество ошибок: ";
+       let count_value_error = document.createElement("span");
+       count_value_error.classList.add("count-error-value");
+       count_value_error.innerText = object_train.count_no;
+       count_text_error.append(count_value_error);
+       container_text.append(count_text_error);
+       body_element.appendChild(container_text);
+       // текст поражения конец
+
+
+
+
        setTimeout(() => {window.location.pathname = 'English-for-kids/index.html'}, 7000) // перезагрузить страницу
     }
 
