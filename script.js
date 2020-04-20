@@ -20,8 +20,18 @@ let object_train = {
   count_no: 0, // количество ложных кликов не по той самой карточке
   count_yes: 0, // количество удачных кликов по той самой карточке
   count_cards: 0, // количество удачных кликов по той самой карточке
-  this_click: false,
+  this_click: false, // текущий клик
   counts_button: 0, // количество кнопок
+  this_word: false,  // текущее слово
+  this_sound_play: false, // текущий трек
+  reset_play() {
+    this.count_no = 0; 
+    this.count_yes = 0; 
+    this.count_cards = 0; 
+    this.this_click = false;
+    this.this_word = false;
+    this.this_sound_play = false;
+  }
 }
 
 
@@ -762,7 +772,16 @@ main_menu_container.addEventListener("click", element => {
 
   if (!element.target.classList.toString().includes(default_class_main_card)) return; // если клик был не по карточке меню
 
-  if (object_train.categoryes_page_mode && object_train.counts_button) object_train.counts_button = 0; // если мы на странице с категор и кнопка есть, удалить
+  if (object_train.categoryes_page_mode && object_train.counts_button) {
+    object_train.counts_button = 0; // если мы на странице с категор и кнопка есть, удалить
+    this_sound = false; // а если удалили кнопку то игра окончена в любом случае даже если не началась
+    object_train.reset_play(); // сбросили игровой объект
+    
+    while (container_star.firstChild) { // тогда удалим все звёздочки, даже если их нет
+      container_star.removeChild(container_star.firstChild);
+     }
+    
+  }
 
 
   delete_cards(); // удалить все карточки 
@@ -830,17 +849,12 @@ cards_container.addEventListener("click", element => {
 
 
 
-
-
-
-
-
 // обработчик событий клика по карточке, тоесть её картинке (воспроизвести аудио)
 cards_container.addEventListener("click", element => {
 
   if (object_train.training_mode) return; // не воспроизводить звуки в режиме игры при клике по картинке
 
-  let text_this; // переменная в которой текст текущей карточки
+
   let src; // путь к аудиозаписи
   // если кликнули по клавной карточке или не по картинке карточки то сразу завершить досрочно
   if (element.target.parentNode.classList.toString().includes("item") || !element.target.classList.toString().includes("card-image")) {
@@ -850,15 +864,15 @@ cards_container.addEventListener("click", element => {
   // в этом цикле перебираем всё содержимое карточки, находим текст и присваиваем его переменной
   for (let i of element.target.parentNode.children) {
     if (i.tagName == "FIGCAPTION") {
-      text_this = i.innerText.toString();
+      object_train.this_word = i.innerText.toString();
     }
   };
 
   // перебираем массив объектов и находим текущую карточку
   for (let i = 0; i < array_objects_cards.length; i++) {
     src = array_objects_cards[i].audioSrc;
-    if (array_objects_cards[i].word == text_this) break;
-    if (i == array_objects_cards.length - 1 && array_objects_cards[i].word != text_this) src = undefined;
+    if (array_objects_cards[i].word == object_train.this_word) break;
+    if (i == array_objects_cards.length - 1 && array_objects_cards[i].word != object_train.this_word) src = undefined;
   }
 
   soundPlay(src);
@@ -989,11 +1003,7 @@ function shuffle__arry(arr) {
 }
 
 
-// логика игры
-// получить массив всех слов
-// перемешать этот массив
-// войти в цикл и проигрывать музыку соответствующую текущему слову
-// проиграл трек и войти в бесконечный цикл который закончится когда пользователь
+
 
 let array_sound = []; // объявили массив для сбора треков
 let this_sound; // временная переменная
@@ -1036,28 +1046,28 @@ document.addEventListener("click", element => {
    
 
   let collection_children = element.target.parentNode.children; // получили коллекцию детей карточки
-  let text_this; // переменная в которой будет лежать текст карточки по которой кликнули
+
   
   // нашли в карточке текст и положили его в переменную текст зис
   for (let i of collection_children ) {
     if ( i.classList.contains("card-text-angl") ) {
-      text_this = i.innerText;
+      object_train.this_word = i.innerText;
     }
   };
   
   // если нажал на ту самую карточку 
-  if (text_this == this_sound.word) {
+  if (object_train.this_word == this_sound.word) {
+    if ( element.target.parentNode.classList.contains("cards-container-active") ) return; // если кликнули по уже выбраной карте
     object_train.count_yes++; // количество правильных ответов увеличилось
     let abc = document.createElement("div");
     abc.classList.add("star-win");
     element.target.parentNode.classList.add("cards-container-active");
-
-
     container_star.append(abc);
     soundPlay("audio/true_click.mp3");
     object_train.this_click = true; // текущий выбор верный
   }
   else {
+    if ( element.target.parentNode.classList.contains("cards-container-active") ) return; // если кликнули по уже выбраной карте
     object_train.count_no++; // количество правильных ответов уменьшилось
     let jj = document.createElement("div");
     jj.classList.add("star-lose");
@@ -1078,7 +1088,7 @@ document.addEventListener("click", element => {
   if ( object_train.count_yes == object_train.count_cards ) {
 
     if ( object_train.count_no == 0 ) {
-      soundPlay("audio/fistful-of-frags-victory.mp3");
+      setTimeout( () => { soundPlay("audio/fistful-of-frags-victory.mp3") }, 1500); // музыка победы
      
       while (body_element.firstChild) {
         body_element.removeChild(body_element.firstChild);
@@ -1087,11 +1097,11 @@ document.addEventListener("click", element => {
        let create_element = document.createElement("div");
        create_element.classList.add("body-win");
        body_element.appendChild(create_element);
-
-      setTimeout(() => {window.location.pathname = '/'}, 16000);
+       setTimeout(() => {window.location.pathname = 'English-for-kids/index.html'}, 16000) // перезагрузить страницу
     }
     else {
-      soundPlay("audio/you_lose.mp3");
+      setTimeout( () => { soundPlay("audio/you_lose.mp3") }, 1500); // музыка поражения
+      
       while (body_element.firstChild) {
         body_element.removeChild(body_element.firstChild);
        }
@@ -1099,7 +1109,7 @@ document.addEventListener("click", element => {
        let create_element = document.createElement("div");
        create_element.classList.add("body-lose");
        body_element.appendChild(create_element);
-      setTimeout(() => {window.location.pathname = '/'}, 5000);
+       setTimeout(() => {window.location.pathname = 'English-for-kids/index.html'}, 5000) // перезагрузить страницу
     }
 
     

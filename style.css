@@ -396,26 +396,27 @@ body {
 }
 
 .container-star {
+  margin: 30px auto;
   display: flex;
   justify-content: flex-end;
-  width: 100%;
-  height: 50px;
+  width: 1180px;
   overflow: hidden;
-  margin-bottom: 20px;
+  height: 50px;
 }
 
-
 .star-win {
-  width: 20px;
-  height: 20px;
+  margin: 0 10px;
+  min-width: 50px;
+  height: 50px;
   background-image: url("images/star-win.png");
   background-size: cover;
   background-repeat: no-repeat;
 }
 
 .star-lose {
-  width: 20px;
-  height: 20px;
+  margin: 0 10px;
+  min-width: 50px;
+  height: 50px;
   background-image: url("images/star-lose.png");
   background-size: cover;
   background-repeat: no-repeat; 
@@ -480,6 +481,20 @@ body {
   .cards-container {
     width: 800px;
   }
+  .container-star {
+    width: 800px;
+    height: 40px;
+  }
+
+  .star-win {
+    width: 40px;
+    height: 40px;
+  }
+  .star-lose {
+    width: 40px;
+    height: 40px;
+  }
+
 
 
  .category-card {
@@ -532,6 +547,20 @@ body {
   /* стили карточек */
   .cards-container {
     width: 500px;
+  }
+
+  .container-star {
+    width: 500px;
+    height: 35px;
+  }
+
+  .star-win {
+    width: 35px;
+    height: 35px;
+  }
+  .star-lose {
+    width: 35px;
+    height: 35px;
   }
 
 
@@ -610,6 +639,21 @@ body {
   .cards-container {
     width: 280px;
     margin: 0 auto;
+  }
+
+
+  .container-star {
+    width: 280px;
+    height: 30px;
+  }
+
+  .star-win {
+    width: 30px;
+    height: 30px;
+  }
+  .star-lose {
+    width: 30px;
+    height: 30px;
   }
 
 
