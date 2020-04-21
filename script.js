@@ -9,6 +9,7 @@ const default_class_container_img = "rotate-button";
 const default_class_arrow = "rotate-button__img";
 const default_class_main_card = "item";
 const switch_trainin_play = document.querySelector(".switch-play-training__round"); // получили наш переключатель
+const switch_trainin_play_text = document.querySelector(".switch-text");
 const body_element = document.querySelector("body");
 const container_star = document.querySelector(".container-star");
 
@@ -888,10 +889,47 @@ cards_container.addEventListener("click", element => {
 // обработчик событий клика по переключателю
 
 switch_trainin_play.addEventListener("click", element => {
+  
 
-
+  
   // стукнули по переключателю и включили режим игры, стукнули снова выключили режим игры
   object_train.training_mode = object_train.training_mode ? false : true;
+
+  if ( object_train.training_mode )  {
+    switch_trainin_play_text.style.display = "none";
+    setTimeout( () => { 
+      switch_trainin_play_text.innerText = "Train";
+      switch_trainin_play_text.classList.add("switch-text-active");
+    }, 210);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.1"; }, 400);
+    setTimeout( () => { switch_trainin_play_text.style.display = "block"; }, 450);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.2"; }, 500);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.3"; }, 550);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.4"; }, 600);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.5"; }, 650);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.6"; }, 700);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.7"; }, 750);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.8"; }, 800);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.9"; }, 850);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "1"; }, 900);
+  } else {
+    switch_trainin_play_text.style.display = "none";
+    setTimeout( () => { 
+    switch_trainin_play_text.innerText = "Play";
+    switch_trainin_play_text.classList.remove("switch-text-active");
+    }, 210);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.1"; }, 400);
+    setTimeout( () => { switch_trainin_play_text.style.display = "block"; }, 450);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.2"; }, 500);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.3"; }, 550);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.4"; }, 600);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.5"; }, 650);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.6"; }, 700);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.7"; }, 750);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.8"; }, 800);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.9"; }, 850);
+    setTimeout( () => { switch_trainin_play_text.style.opacity = "1"; }, 900);
+  }
 
   // если стукнули по выключателю то закрасили или вернули в исходное состояние меню
   main_menu_container.classList.toggle("main-menu-container-play");
@@ -1167,15 +1205,39 @@ document.addEventListener("click", element => {
 });
 
 
-
-
-
-
-
 document.addEventListener("click", element => {
   if ( element.target.classList.contains("button-mode-game")  && this_sound) {
-    soundPlay(this_sound.src);
+    soundPlay(this_sound.src); // повторить трек
+    
   }
-})
+
+  
+
+});
 
 
+document.addEventListener("mousedown", element => {
+  
+  if ( !element.target.classList.contains("button-mode-game-active") ) return;
+   
+  element.target.classList.add("button-mode-game-click"); // разукрасить кнопку
+  
+});
+
+document.addEventListener("mouseup", element => {
+  
+  if ( !element.target.classList.contains("button-mode-game-active") ) return;
+   
+  element.target.classList.remove("button-mode-game-click"); // разукрасить кнопку
+  
+});
+
+
+
+
+// отлавливаем баг с переключателем
+window.addEventListener('load', (event) => {
+  if ( !document.querySelector(".switch-play-training__input-checkbox").checked && !document.querySelector(".switch-text").classList.contains(".switch-text-active") ) {
+    document.querySelector(".switch-play-training__input-checkbox").checked = "false";
+  }
+});
