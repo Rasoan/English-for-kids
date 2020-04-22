@@ -470,7 +470,7 @@ body {
 
 .body-lose {
   width: 300px;
-  height: 270px;
+  height: 300px;
   margin: 50px auto;
   background-image: url(images/failure.jpg);
   background-size: cover;
@@ -495,7 +495,7 @@ body {
 
 .body-win {
   width: 300px;
-  height: 270px;
+  height: 300px;
   margin: 50px auto;
   background-image: url(images/success.jpg);
   background-size: cover;
