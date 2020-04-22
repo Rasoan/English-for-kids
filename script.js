@@ -23,12 +23,12 @@ let object_train = {
   count_cards: 0, // количество удачных кликов по той самой карточке
   this_click: false, // текущий клик
   counts_button: 0, // количество кнопок
-  this_word: false,  // текущее слово
+  this_word: false, // текущее слово
   this_sound_play: false, // текущий трек
   reset_play() {
-    this.count_no = 0; 
-    this.count_yes = 0; 
-    this.count_cards = 0; 
+    this.count_no = 0;
+    this.count_yes = 0;
+    this.count_cards = 0;
     this.this_click = false;
     this.this_word = false;
     this.this_sound_play = false;
@@ -771,17 +771,18 @@ main_menu_switch.addEventListener("click", element => {
 // обработчик собитий клика по меню
 main_menu_container.addEventListener("click", element => {
 
+
   if (!element.target.classList.toString().includes(default_class_main_card)) return; // если клик был не по карточке меню
 
   if (object_train.categoryes_page_mode && object_train.counts_button) {
     object_train.counts_button = 0; // если мы на странице с категор и кнопка есть, удалить
     this_sound = false; // а если удалили кнопку то игра окончена в любом случае даже если не началась
     object_train.reset_play(); // сбросили игровой объект
-    
+
     while (container_star.firstChild) { // тогда удалим все звёздочки, даже если их нет
       container_star.removeChild(container_star.firstChild);
-     }
-    
+    }
+
   }
 
 
@@ -797,6 +798,14 @@ main_menu_container.addEventListener("click", element => {
   main_menu_switch.classList.remove("main-menu-switch-active"); // повернуть обратно квадратик
   main_menu_container.classList.remove("main-menu-container-active"); // убрать меню
 
+
+
+  // закрашиваем ту самую линку
+  document.querySelectorAll(".main-menu-list__item").forEach(element => {
+    element.classList.remove("main-menu-list__item-click");
+  });
+  element.target.classList.add("main-menu-list__item-click");
+
 });
 
 
@@ -810,6 +819,21 @@ cards_container.addEventListener("click", element => {
 
   add_cards(element.target.parentNode.getAttribute("name")); // добавить карточки той самой категории
   card_input_mod_game(object_train.training_mode); // закрасить карточки стандартные
+
+  // убрать раскраску из всех пунктов меню
+  document.querySelectorAll(".main-menu-list__item").forEach(element => {
+    element.classList.remove("main-menu-list__item-click");
+  });
+  // закрасить тот, по которому кликнули
+  let this_click_text;
+  let collection = element.target.parentNode.children;
+  for (let i of collection) {
+    if (i.tagName == "FIGCAPTION") this_click_text = i.innerText.toString();
+  }
+  // Добавить тому самому закраску
+  document.querySelectorAll(".main-menu-list__item").forEach(element => {
+    if (element.innerText == this_click_text) element.classList.add("main-menu-list__item-click");
+  });
 
 
 
@@ -889,46 +913,90 @@ cards_container.addEventListener("click", element => {
 // обработчик событий клика по переключателю
 
 switch_trainin_play.addEventListener("click", element => {
-  
 
-  
+
+
   // стукнули по переключателю и включили режим игры, стукнули снова выключили режим игры
   object_train.training_mode = object_train.training_mode ? false : true;
 
-  if ( object_train.training_mode )  {
+  if (object_train.training_mode) {
     switch_trainin_play_text.style.display = "none";
-    setTimeout( () => { 
+    setTimeout(() => {
       switch_trainin_play_text.innerText = "Train";
       switch_trainin_play_text.classList.add("switch-text-active");
     }, 210);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.1"; }, 400);
-    setTimeout( () => { switch_trainin_play_text.style.display = "block"; }, 450);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.2"; }, 500);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.3"; }, 550);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.4"; }, 600);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.5"; }, 650);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.6"; }, 700);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.7"; }, 750);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.8"; }, 800);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.9"; }, 850);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "1"; }, 900);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.1";
+    }, 400);
+    setTimeout(() => {
+      switch_trainin_play_text.style.display = "block";
+    }, 450);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.2";
+    }, 500);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.3";
+    }, 550);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.4";
+    }, 600);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.5";
+    }, 650);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.6";
+    }, 700);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.7";
+    }, 750);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.8";
+    }, 800);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.9";
+    }, 850);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "1";
+    }, 900);
   } else {
     switch_trainin_play_text.style.display = "none";
-    setTimeout( () => { 
-    switch_trainin_play_text.innerText = "Play";
-    switch_trainin_play_text.classList.remove("switch-text-active");
+    setTimeout(() => {
+      switch_trainin_play_text.innerText = "Play";
+      switch_trainin_play_text.classList.remove("switch-text-active");
     }, 210);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.1"; }, 400);
-    setTimeout( () => { switch_trainin_play_text.style.display = "block"; }, 450);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.2"; }, 500);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.3"; }, 550);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.4"; }, 600);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.5"; }, 650);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.6"; }, 700);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.7"; }, 750);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.8"; }, 800);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "0.9"; }, 850);
-    setTimeout( () => { switch_trainin_play_text.style.opacity = "1"; }, 900);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.1";
+    }, 400);
+    setTimeout(() => {
+      switch_trainin_play_text.style.display = "block";
+    }, 450);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.2";
+    }, 500);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.3";
+    }, 550);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.4";
+    }, 600);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.5";
+    }, 650);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.6";
+    }, 700);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.7";
+    }, 750);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.8";
+    }, 800);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "0.9";
+    }, 850);
+    setTimeout(() => {
+      switch_trainin_play_text.style.opacity = "1";
+    }, 900);
   }
 
   // если стукнули по выключателю то закрасили или вернули в исходное состояние меню
@@ -987,15 +1055,15 @@ function toggle_button(cards_main_in_page, mode_play) {
 // функция которая переключит все стандартные карточки в режим игры
 function card_input_mod_game(flag) {
 
-  if ( true ) { // если переключили режим игры в любом случае игровой ресет
+  if (true) { // если переключили режим игры в любом случае игровой ресет
     this_sound = false; // а если удалили кнопку то игра окончена в любом случае даже если не началась
     object_train.reset_play(); // сбросили игровой объект
-    document.querySelectorAll(".card-front").forEach( element => { // снять выделение с карточек
+    document.querySelectorAll(".card-front").forEach(element => { // снять выделение с карточек
       element.classList.remove("cards-container-active");
-     });
+    });
     while (container_star.firstChild) { // тогда удалим все звёздочки, даже если их нет
       container_star.removeChild(container_star.firstChild);
-     }
+    }
   }
 
   const card_items_text = document.querySelectorAll(".card_vrap-rotate .card-text"); // все тексты карточек
@@ -1057,7 +1125,7 @@ function shuffle__arry(arr) {
 let array_sound = []; // объявили массив для сбора треков
 let this_sound; // временная переменная
 document.addEventListener("click", element => {
-  if (!element.target.classList.contains("button-mode-game") || this_sound ) return; // если клик не по кнопке завершить или уже игра
+  if (!element.target.classList.contains("button-mode-game") || this_sound) return; // если клик не по кнопке завершить или уже игра
   array_sound.length = 0; // обнулить массив звуков
 
   document.querySelector(".button-mode-game").classList.add("button-mode-game-active");
@@ -1066,20 +1134,19 @@ document.addEventListener("click", element => {
   let collection_text_card = document.querySelectorAll(".card-text-angl"); // получили список слов
 
   collection_text_card.forEach(element => { // положили все слова в массив
-    array_sound.push( 
-                   { 
-                     src: "audio/" + element.innerText.toString() + ".mp3", 
-                     word: element.innerText.toString(), 
-                     flag: false, 
-                    });
+    array_sound.push({
+      src: "audio/" + element.innerText.toString() + ".mp3",
+      word: element.innerText.toString(),
+      flag: false,
+    });
   });
   array_sound = shuffle__arry(array_sound); // перемешали все слова
-   
-  
+
+
   object_train.count_cards = array_sound.length; // количество карточек всего
   this_sound = array_sound.pop(); // забрать последний трек
   soundPlay(this_sound.src); // воспроизвести его
-   
+
 
 });
 
@@ -1091,22 +1158,22 @@ document.addEventListener("click", element => {
 
 document.addEventListener("click", element => {
 
-  if ( !this_sound || element.target.classList.contains("button-mode-game") || !element.target.classList.contains("card-image") ) return; // если текущее слово false то выход
-   
+  if (!this_sound || element.target.classList.contains("button-mode-game") || !element.target.classList.contains("card-image")) return; // если текущее слово false то выход
+
 
   let collection_children = element.target.parentNode.children; // получили коллекцию детей карточки
 
-  
+
   // нашли в карточке текст и положили его в переменную текст зис
-  for (let i of collection_children ) {
-    if ( i.classList.contains("card-text-angl") ) {
+  for (let i of collection_children) {
+    if (i.classList.contains("card-text-angl")) {
       object_train.this_word = i.innerText;
     }
   };
-  
+
   // если нажал на ту самую карточку 
   if (object_train.this_word == this_sound.word) {
-    if ( element.target.parentNode.classList.contains("cards-container-active") ) return; // если кликнули по уже выбраной карте
+    if (element.target.parentNode.classList.contains("cards-container-active")) return; // если кликнули по уже выбраной карте
     object_train.count_yes++; // количество правильных ответов увеличилось
     let abc = document.createElement("div");
     abc.classList.add("star-win");
@@ -1114,9 +1181,8 @@ document.addEventListener("click", element => {
     container_star.append(abc);
     soundPlay("audio/true_click.mp3");
     object_train.this_click = true; // текущий выбор верный
-  }
-  else {
-    if ( element.target.parentNode.classList.contains("cards-container-active") ) return; // если кликнули по уже выбраной карте
+  } else {
+    if (element.target.parentNode.classList.contains("cards-container-active")) return; // если кликнули по уже выбраной карте
     object_train.count_no++; // количество правильных ответов уменьшилось
     let jj = document.createElement("div");
     jj.classList.add("star-lose");
@@ -1124,28 +1190,30 @@ document.addEventListener("click", element => {
     soundPlay("audio/error_click.mp3");
     object_train.this_click = false; // текущий выбор неверный
   }
-  
 
 
-  if ( !object_train.this_click ) return; // если клик был неверный то досрочно заканчиваем обработчик
 
-  
+  if (!object_train.this_click) return; // если клик был неверный то досрочно заканчиваем обработчик
+
+
 
 
 
   // если количество верных ответов равно количеству карточек то перезагрузка
-  if ( object_train.count_yes == object_train.count_cards ) {
+  if (object_train.count_yes == object_train.count_cards) {
 
-    if ( object_train.count_no == 0 ) {
-      setTimeout( () => { soundPlay("audio/fistful-of-frags-victory.mp3") }, 1500); // музыка победы
-     
+    if (object_train.count_no == 0) {
+      setTimeout(() => {
+        soundPlay("audio/fistful-of-frags-victory.mp3")
+      }, 1500); // музыка победы
+
       while (body_element.firstChild) {
         body_element.removeChild(body_element.firstChild);
-       }
-    
-       let create_element = document.createElement("div");
-       create_element.classList.add("body-win");
-       body_element.appendChild(create_element);
+      }
+
+      let create_element = document.createElement("div");
+      create_element.classList.add("body-win");
+      body_element.appendChild(create_element);
 
 
       // сооздали и положили текст победы
@@ -1158,86 +1226,87 @@ document.addEventListener("click", element => {
       body_element.appendChild(container_text);
       // текст победы конец
 
-  
 
-       setTimeout(() => {window.location.pathname = 'English-for-kids/index.html'}, 18000) // перезагрузить страницу
-    }
-    else {
-      setTimeout( () => { soundPlay("audio/you_lose.mp3") }, 1500); // музыка поражения
-      
+
+      setTimeout(() => {
+        window.location.pathname = 'English-for-kids/index.html'
+      }, 18000) // перезагрузить страницу
+    } else {
+      setTimeout(() => {
+        soundPlay("audio/you_lose.mp3")
+      }, 1500); // музыка поражения
+
       while (body_element.firstChild) {
         body_element.removeChild(body_element.firstChild);
-       }
-       
+      }
+
       // создали и положили картинку поражения
-       let create_element = document.createElement("div");
-       create_element.classList.add("body-lose");
-       body_element.appendChild(create_element);
+      let create_element = document.createElement("div");
+      create_element.classList.add("body-lose");
+      body_element.appendChild(create_element);
 
 
-       // сооздали и положили текст поражения
-       let container_text = document.createElement("div");
-       container_text.classList.add("count-error-container");
-       let count_text_error = document.createElement("p");
-       count_text_error.classList.add("count-error-text");
-       count_text_error.innerText = "К сожалению you lose, количество ошибок: ";
-       let count_value_error = document.createElement("span");
-       count_value_error.classList.add("count-error-value");
-       count_value_error.innerText = object_train.count_no;
-       count_text_error.append(count_value_error);
-       container_text.append(count_text_error);
-       body_element.appendChild(container_text);
-       // текст поражения конец
+      // сооздали и положили текст поражения
+      let container_text = document.createElement("div");
+      container_text.classList.add("count-error-container");
+      let count_text_error = document.createElement("p");
+      count_text_error.classList.add("count-error-text");
+      count_text_error.innerText = "К сожалению you lose, количество ошибок: ";
+      let count_value_error = document.createElement("span");
+      count_value_error.classList.add("count-error-value");
+      count_value_error.innerText = object_train.count_no;
+      count_text_error.append(count_value_error);
+      container_text.append(count_text_error);
+      body_element.appendChild(container_text);
+      // текст поражения конец
 
 
 
 
-       setTimeout(() => {window.location.pathname = 'English-for-kids/index.html'}, 7000) // перезагрузить страницу
+      setTimeout(() => {
+        window.location.pathname = 'English-for-kids/index.html'
+      }, 7000) // перезагрузить страницу
     }
 
-    
+
   }
 
   this_sound = array_sound.pop(); // забрали следующее слово
   soundPlay(this_sound.src); // воспроизвели его
-  
-  
+
+
 });
 
 
 document.addEventListener("click", element => {
-  if ( element.target.classList.contains("button-mode-game")  && this_sound) {
+  if (element.target.classList.contains("button-mode-game") && this_sound) {
     soundPlay(this_sound.src); // повторить трек
-    
+
   }
 
-  
+
 
 });
 
 
 document.addEventListener("mousedown", element => {
-  
-  if ( !element.target.classList.contains("button-mode-game-active") ) return;
-   
+
+  if (!element.target.classList.contains("button-mode-game-active")) return;
+
   element.target.classList.add("button-mode-game-click"); // разукрасить кнопку
-  
+
 });
 
 document.addEventListener("mouseup", element => {
-  
-  if ( !element.target.classList.contains("button-mode-game-active") ) return;
-   
+
+  if (!element.target.classList.contains("button-mode-game-active")) return;
+
   element.target.classList.remove("button-mode-game-click"); // разукрасить кнопку
-  
 });
-
-
-
 
 // отлавливаем баг с переключателем
 window.addEventListener('load', (event) => {
-  if ( !document.querySelector(".switch-play-training__input-checkbox").checked && !document.querySelector(".switch-text").classList.contains(".switch-text-active") ) {
+  if (!document.querySelector(".switch-play-training__input-checkbox").checked && !document.querySelector(".switch-text").classList.contains(".switch-text-active")) {
     document.querySelector(".switch-play-training__input-checkbox").checked = "false";
   }
 });
