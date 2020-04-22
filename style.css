@@ -788,5 +788,8 @@ body {
 
   }
 
+  .button-mode-game-active {
+   padding: 38px;
+   left: calc( 50% - 38px);
 
 }
