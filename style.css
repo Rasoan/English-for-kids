@@ -470,7 +470,7 @@ body {
 
 .body-lose {
   width: 300px;
-  height: 300px;
+  height: 240px;
   margin: 50px auto;
   background-image: url(images/failure.jpg);
   background-size: cover;
